@@ -19,7 +19,7 @@
     "url": "https://github.com/NurPech/ioBroker.suru-watermonitor.git"
   },
   "engines": {
-    "node": ">= 20"
+    "node": ">= 22"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.4.3"
@@ -33,7 +33,7 @@
     "@iobroker/dev-server": "^0.8.0",
     "@iobroker/eslint-config": "^2.3.4",
     "@iobroker/testing": "^6.3.0",
-    "@tsconfig/node20": "^20.1.10",
+    "@tsconfig/node22": "^22.0.6",
     "@types/iobroker": "npm:@iobroker/types@^7.2.5",
     "@types/node": "^20.19.43",
     "rimraf": "^6.1.3",

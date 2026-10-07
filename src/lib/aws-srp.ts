@@ -98,10 +98,15 @@ export function formatTimestamp(now: Date): string {
     );
 }
 
+/** Parameters of the PASSWORD_VERIFIER challenge returned by InitiateAuth. */
 export interface ChallengeParameters {
+    /** User id to use for SRP (may differ from the login name) */
     USER_ID_FOR_SRP: string;
+    /** Salt (hex) */
     SALT: string;
+    /** Server public value B (hex) */
     SRP_B: string;
+    /** Opaque secret block (base64) */
     SECRET_BLOCK: string;
 }
 
@@ -113,6 +118,11 @@ export class AWSSRP {
     public smallA: bigint;
     public largeA: bigint;
 
+    /**
+     * @param username Login name (e-mail)
+     * @param password Password
+     * @param poolId Cognito user pool id, e.g. `eu-central-1_xxxx`
+     */
     public constructor(
         private readonly username: string,
         private readonly password: string,
@@ -137,6 +147,14 @@ export class AWSSRP {
         return { USERNAME: this.username, SRP_A: longToHex(this.largeA) };
     }
 
+    /**
+     * Derive the HKDF key used to sign the challenge response.
+     *
+     * @param username User id for SRP
+     * @param password Password
+     * @param serverB Server public value B
+     * @param salt Salt (hex)
+     */
     public getPasswordAuthenticationKey(username: string, password: string, serverB: bigint, salt: string): Buffer {
         const u = calculateU(this.largeA, serverB);
         if (u === 0n) {

@@ -9,45 +9,128 @@ import { API_BASE, COGNITO_CLIENT_ID, COGNITO_IDP_URL, COGNITO_POOL_ID } from '.
 
 const AMZ_JSON = 'application/x-amz-json-1.1';
 
+/** Base error. */
 export class SuruError extends Error {}
 /** Invalid credentials or auth flow failure. */
 export class SuruAuthError extends SuruError {}
 /** Non-auth API error. */
 export class SuruApiError extends SuruError {}
 
+/** Meter device attached to a unit. */
 export interface SuruDevice {
+    /** Device id */
     id?: string;
+    /** Meter model */
     meterType?: string;
 }
 
-export interface SuruUnitDetail {
-    id?: string;
-    serialNumber?: string;
-    address?: { streetName?: string; streetNumber?: string };
-    devices?: SuruDevice[];
-    waterProperties?: { waterHardness?: number; phValue?: number };
+/** Street address of a unit. */
+export interface SuruAddress {
+    /** Street name */
+    streetName?: string;
+    /** House number */
+    streetNumber?: string;
 }
 
+/** Water quality values of a unit. */
+export interface SuruWaterProperties {
+    /** Water hardness in °dH */
+    waterHardness?: number;
+    /** pH value */
+    phValue?: number;
+}
+
+/** Entry of the unit list. */
+export interface SuruUnitSummary {
+    /** Unit id */
+    id?: string;
+}
+
+/** Response of the unit list endpoint. */
+interface SuruUnitList {
+    /** All units of the account */
+    units?: SuruUnitSummary[];
+}
+
+/** Detail data of a unit. */
+export interface SuruUnitDetail {
+    /** Unit id */
+    id?: string;
+    /** Serial number of the meter */
+    serialNumber?: string;
+    /** Installation address */
+    address?: SuruAddress;
+    /** Attached devices */
+    devices?: SuruDevice[];
+    /** Water quality values */
+    waterProperties?: SuruWaterProperties;
+}
+
+/** Latest meter reading. */
 export interface SuruReading {
+    /** Meter reading in m³ */
     reading?: number;
+    /** ISO timestamp of the measurement */
     measuredAt?: string;
 }
 
+/** Consumption values for the requested range. */
 export interface SuruConsumption {
+    /** Consumption values in l */
     values?: (number | null)[];
 }
 
+/** State of a single incident type. */
+export interface SuruIncident {
+    /** e.g. OPEN, CONFIRMED, CLOSED */
+    state?: string;
+}
+
+/** Basic alarm of the pipe monitor. */
+export interface SuruBasicAlarm {
+    /** `true` while an alarm is active */
+    active?: boolean;
+}
+
+/** Incident overview of a unit. */
 export interface SuruIncidents {
-    basicAlarm?: { active?: boolean };
-    incidents?: Record<string, { state?: string } | undefined>;
+    /** Basic alarm of the pipe monitor */
+    basicAlarm?: SuruBasicAlarm;
+    /** Incidents by type (highFlow, continuousWaterFlow, temperature, lowFlow) */
+    incidents?: Record<string, SuruIncident | undefined>;
+}
+
+/** Successful Cognito InitiateAuth response for USER_SRP_AUTH. */
+interface InitiateAuthResponse {
+    /** Expected: PASSWORD_VERIFIER */
+    ChallengeName?: string;
+    /** SRP challenge values */
+    ChallengeParameters: ChallengeParameters;
+}
+
+/** Successful Cognito RespondToAuthChallenge response. */
+interface RespondToAuthChallengeResponse {
+    /** Tokens, only present on success */
+    AuthenticationResult?: {
+        /** JWT access token */
+        AccessToken?: string;
+        /** Token lifetime in seconds */
+        ExpiresIn?: number;
+    };
 }
 
 type Fetch = typeof fetch;
 
+/** Minimal SURU WaterMonitor API client. */
 export class SuruWaterApi {
     private accessToken: string | null = null;
     private expiresAt = 0;
 
+    /**
+     * @param email SURU account e-mail
+     * @param password SURU account password
+     * @param fetchFn fetch implementation (injectable for tests)
+     */
     public constructor(
         private readonly email: string,
         private readonly password: string,
@@ -85,25 +168,19 @@ export class SuruWaterApi {
     /** Full SRP login -> access token. */
     public async login(): Promise<void> {
         const srp = new AWSSRP(this.email, this.password, COGNITO_POOL_ID);
-        const init = await this.cognito<{ ChallengeName?: string; ChallengeParameters: ChallengeParameters }>(
-            'InitiateAuth',
-            {
-                AuthFlow: 'USER_SRP_AUTH',
-                ClientId: COGNITO_CLIENT_ID,
-                AuthParameters: srp.getAuthParameters(),
-            },
-        );
+        const init = await this.cognito<InitiateAuthResponse>('InitiateAuth', {
+            AuthFlow: 'USER_SRP_AUTH',
+            ClientId: COGNITO_CLIENT_ID,
+            AuthParameters: srp.getAuthParameters(),
+        });
         if (init.ChallengeName !== 'PASSWORD_VERIFIER') {
             throw new SuruAuthError(`Unexpected challenge: ${init.ChallengeName}`);
         }
-        const result = await this.cognito<{ AuthenticationResult?: { AccessToken?: string; ExpiresIn?: number } }>(
-            'RespondToAuthChallenge',
-            {
-                ChallengeName: 'PASSWORD_VERIFIER',
-                ClientId: COGNITO_CLIENT_ID,
-                ChallengeResponses: srp.processChallenge(init.ChallengeParameters),
-            },
-        );
+        const result = await this.cognito<RespondToAuthChallengeResponse>('RespondToAuthChallenge', {
+            ChallengeName: 'PASSWORD_VERIFIER',
+            ClientId: COGNITO_CLIENT_ID,
+            ChallengeResponses: srp.processChallenge(init.ChallengeParameters),
+        });
         const auth = result.AuthenticationResult ?? {};
         if (!auth.AccessToken) {
             throw new SuruAuthError('No AccessToken in Cognito response');
@@ -148,21 +225,38 @@ export class SuruWaterApi {
         return (text ? JSON.parse(text) : {}) as T;
     }
 
-    public async getUnits(): Promise<{ id?: string }[]> {
-        const data = await this.get<{ units?: { id?: string }[] }>('units');
+    /** List all units of the account. */
+    public async getUnits(): Promise<SuruUnitSummary[]> {
+        const data = await this.get<SuruUnitList>('units');
         return data.units ?? [];
     }
 
+    /**
+     * Detail data of one unit.
+     *
+     * @param unitId Unit id
+     */
     public getUnit(unitId: string): Promise<SuruUnitDetail> {
         return this.get(`units/${unitId}`);
     }
 
+    /**
+     * Latest meter reading of one unit.
+     *
+     * @param unitId Unit id
+     */
     public getReading(unitId: string): Promise<SuruReading> {
         // `date` is mandatory (API returns HTTP 400 without it).
         const now = `${new Date().toISOString().slice(0, 19)}Z`;
         return this.get(`units/${unitId}/reading`, { date: now });
     }
 
+    /**
+     * Consumption of one unit since 00:00 UTC.
+     *
+     * @param unitId Unit id
+     * @param range Aggregation range, e.g. `day`
+     */
     public getConsumption(unitId: string, range = 'day'): Promise<SuruConsumption> {
         const start = new Date();
         start.setUTCHours(0, 0, 0, 0);
@@ -172,6 +266,12 @@ export class SuruWaterApi {
         });
     }
 
+    /**
+     * Incident overview of one unit.
+     *
+     * @param unitId Unit id
+     * @param deviceId Optional device id
+     */
     public getIncidents(unitId: string, deviceId?: string): Promise<SuruIncidents> {
         return this.get(`units/${unitId}/incidents`, deviceId ? { deviceId } : undefined);
     }

@@ -1,0 +1,119 @@
+{
+    "common": {
+        "name": "suru-watermonitor",
+        "version": "0.0.1",
+        "news": {
+            "0.0.1": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "uk": "Початкова версія",
+                "zh-cn": "首次出版"
+            }
+        },
+        "titleLang": {
+            "en": "Suru-Watermonitor",
+            "de": "Suru-Wassermonitor",
+            "ru": "Суру-Водный монитор",
+            "pt": "Suru-Monitor de Água",
+            "nl": "Suru-Watermonitor",
+            "fr": "Suru-Watermonitor",
+            "it": "Suru-Watermonitor",
+            "es": "Suru-Monitor de agua",
+            "pl": "Suru-wodny monitor",
+            "uk": "Суру-Водомонітор",
+            "zh-cn": "Suru-水监测器"
+        },
+        "desc": {
+            "en": "Reads water meter data and pipe alarms from the SURU WaterMonitor cloud",
+            "de": "Liest Wasserzählerdaten und Rohralarme aus der SURU-WaterMonitor-Cloud",
+            "ru": "Суру Водяной монитор",
+            "pt": "Monitor de Água Suru",
+            "nl": "Suru Watermonitor",
+            "fr": "Moniteur d'eau Suru",
+            "it": "Suru Watermonitor",
+            "es": "Monitor de agua Suru",
+            "pl": "Monitor wodny Suru",
+            "uk": "Суру Watermonitor",
+            "zh-cn": "苏鲁水监测仪"
+        },
+        "authors": [
+            "M1kad0 <leonie+iobroker@sgessinger.de>"
+        ],
+        "keywords": [
+            "ioBroker",
+            "Suru",
+            "Watermonitor"
+        ],
+        "licenseInformation": {
+            "type": "free",
+            "license": "MIT"
+        },
+        "platform": "Javascript/Node.js",
+        "icon": "suru-watermonitor.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/NurPech/ioBroker.suru-watermonitor/main/admin/suru-watermonitor.png",
+        "readme": "https://github.com/NurPech/ioBroker.suru-watermonitor/blob/main/README.md",
+        "loglevel": "info",
+        "tier": 3,
+        "mode": "daemon",
+        "type": "household",
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "poll",
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=6.0.11"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=7.0.23"
+            }
+        ]
+    },
+    "native": {
+        "email": "",
+        "password": "",
+        "interval": 60
+    },
+    "encryptedNative": [
+        "password"
+    ],
+    "protectedNative": [
+        "password"
+    ],
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "Connected to SURU cloud",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
+    ]
+}

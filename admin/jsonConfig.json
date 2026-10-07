@@ -1,0 +1,40 @@
+{
+    "i18n": true,
+    "type": "panel",
+    "items": {
+        "email": {
+            "type": "text",
+            "label": "E-Mail",
+            "help": "SURU account e-mail",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 4,
+            "xl": 4
+        },
+        "password": {
+            "type": "password",
+            "label": "Password",
+            "visible": true,
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 4,
+            "xl": 4
+        },
+        "interval": {
+            "type": "number",
+            "label": "Poll interval (minutes)",
+            "min": 5,
+            "max": 1440,
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 4,
+            "xl": 4
+        }
+    }
+}

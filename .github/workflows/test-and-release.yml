@@ -39,9 +39,8 @@ jobs:
 
   # Runs adapter tests on all supported node versions and OSes
   adapter-tests:
-    needs: check-and-lint
     if: contains(github.event.head_commit.message, '[skip ci]') == false
-
+    needs: check-and-lint
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -57,44 +56,65 @@ jobs:
           # install-command: 'npm install'
           build: true
 
+  package-check:
+    needs: [check-and-lint]
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22.x'
+          cache: npm
+      - run: npm ci
+      - run: npm run verify:package
+
 # TODO: To enable automatic npm releases, set up trusted publishing in your npm account
 # See https://docs.npmjs.com/trusted-publishers for more details
 # Then uncomment the following block:
 
-#  # Deploys the final package to NPM
-#  deploy:
-#    needs: [check-and-lint, adapter-tests]
-#
-#    # Trigger this step only when a commit on any branch is tagged with a version number
-#    if: |
-#      contains(github.event.head_commit.message, '[skip ci]') == false &&
-#      github.event_name == 'push' &&
-#      startsWith(github.ref, 'refs/tags/v')
-#
-#    runs-on: ubuntu-latest
-#
-#    # Write permissions are required to create Github releases
-#    permissions:
-#      id-token: write
-#      contents: write
-#
-#    steps:
-#      - uses: ioBroker/testing-action-deploy@v1
-#        with:
-#          node-version: '24.x'
-#          # Uncomment the following line if your adapter cannot be installed using 'npm ci'
-#          # install-command: 'npm install'
-#          build: true
-#          github-token: ${{ secrets.GITHUB_TOKEN }}
-#
+  # Deploys the final package to NPM
+  deploy:
+    needs: [check-and-lint, adapter-tests, package-check]
+
+    # Trigger this step only when a commit on any branch is tagged with a version number
+    if: |
+      contains(github.event.head_commit.message, '[skip ci]') == false &&
+      github.event_name == 'push' &&
+      startsWith(github.ref, 'refs/tags/v')
+
+    runs-on: ubuntu-latest
+
+    # Write permissions are required to create Github releases
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      - uses: ioBroker/testing-action-deploy@v1
+        with:
+          # ioBroker adapter-checker requires >= 24.x here. Note: 'npm publish'
+          # provenance is currently broken on npm bundled with recent Node (missing
+          # 'sigstore' dependency, libnpmpublish packaging bug) — confirmed to fail
+          # the same way on both 22.x and 24.x, so pinning to 22.x never actually
+          # avoided it. Releases are published manually until npm ships a fix.
+          node-version: '24.x'
+          # Uncomment the following line if your adapter cannot be installed using 'npm ci'
+          # install-command: 'npm install'
+          build: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
 #          # When using Sentry for error reporting, Sentry can be informed about new releases
-#          # To enable create a API-Token in Sentry (User settings, API keys)
-#          # Enter this token as a GitHub secret (with name SENTRY_AUTH_TOKEN) in the repository options
+#         # To enable create a API-Token in Sentry (User settings, API keys)
+#         # Enter this token as a GitHub secret (with name SENTRY_AUTH_TOKEN) in the repository options
 #          # Then uncomment and customize the following block:
 #          sentry: true
 #          sentry-token: ${{ secrets.SENTRY_AUTH_TOKEN }}
-#          sentry-project: "iobroker-suru-watermonitor"
-#          sentry-version-prefix: "iobroker.suru-watermonitor"
-#          sentry-sourcemap-paths: "build/"
+#          sentry-project: "iobroker-hannah"
+#          sentry-version-prefix: "iobroker.hannah"
+#          sentry-sourcemap-paths: "build/ admin/build/"
 #          # If your sentry project is linked to a GitHub repository, you can enable the following option
 #          # sentry-github-integration: true

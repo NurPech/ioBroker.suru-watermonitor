@@ -29,6 +29,7 @@ function activeIncidents(incidents: SuruIncidents | null): string[] {
 class SuruWatermonitor extends utils.Adapter {
     private api: SuruWaterApi | null = null;
     private pollRunning = false;
+    private consumptionWarned = false;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -91,8 +92,23 @@ class SuruWatermonitor extends utils.Adapter {
     private async updateUnit(api: SuruWaterApi, unitId: string): Promise<void> {
         const detail = await api.getUnit(unitId);
         const reading = await api.getReading(unitId);
-        const consumption = await api.getConsumption(unitId, 'day');
-        const values = (consumption.values ?? []).filter((v): v is number => v !== null && v !== undefined);
+        // Consumption may be forbidden for accounts without the required role (HTTP 403),
+        // this must not prevent the other values from being updated.
+        let values: number[] = [];
+        try {
+            const consumption = await api.getConsumption(unitId, 'day');
+            values = (consumption.values ?? []).filter((v): v is number => v !== null && v !== undefined);
+        } catch (err) {
+            if (!(err instanceof SuruApiError)) {
+                throw err;
+            }
+            if (!this.consumptionWarned) {
+                this.consumptionWarned = true;
+                this.log.warn(`Consumption unavailable for ${unitId}, consumptionToday stays empty: ${err.message}`);
+            } else {
+                this.log.debug(`Consumption unavailable for ${unitId}: ${err.message}`);
+            }
+        }
 
         const deviceId = detail.devices?.[0]?.id;
         let incidents: SuruIncidents | null = null;

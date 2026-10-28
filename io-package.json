@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "suru-watermonitor",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "news": {
+      "0.1.1": {
+        "en": "Consumption errors (e.g. HTTP 403) no longer abort the unit update (#3)",
+        "de": "Konsumfehler (z. B. HTTP 403) brechen das Geräte-Update nicht mehr ab (#3)",
+        "ru": "Ошибки потребления (например, HTTP 403) больше не прерывают обновление устройства (#3)",
+        "pt": "Erros de consumo (ex. HTTP 403) não alteram mais a unidade (#3)",
+        "nl": "Verbruiksfouten (bijv. HTTP 403) breken de update van het apparaat niet langer af (#3)",
+        "fr": "Les erreurs de consommation (HTTP 403) n'interrompent plus la mise à jour (#3)",
+        "it": "Errori di consumo (ad es. HTTP 403) non annullano più l'unità (#3)",
+        "es": "Los errores de consumo (p. ej. HTTP 403) ya no anulan la actualización de la unidad (#3)",
+        "pl": "Błędy zużycia (np. HTTP 403) przestają przerwać aktualizacji urządzenia (#3)",
+        "uk": "Помилки споживання (наприклад, HTTP 403) більше не переривають оновлення пристрою (#3)",
+        "zh-cn": "消耗错误（例如 HTTP 403）不再中止单位更新 (#3)"
+      },
       "0.1.0": {
         "en": "initial release",
         "de": "erste Version",

@@ -7,14 +7,14 @@
         "en": "Consumption errors (e.g. HTTP 403) no longer abort the unit update (#3)",
         "de": "Konsumfehler (z. B. HTTP 403) brechen das Geräte-Update nicht mehr ab (#3)",
         "ru": "Ошибки потребления (например, HTTP 403) больше не прерывают обновление устройства (#3)",
-        "pt": "Erros de consumo (ex. HTTP 403) não alteram mais a unidade (#3)",
+        "pt": "Erros de consumo (ex. HTTP 403) não interrompem mais a atualização da unidade (#3)",
         "nl": "Verbruiksfouten (bijv. HTTP 403) breken de update van het apparaat niet langer af (#3)",
         "fr": "Les erreurs de consommation (HTTP 403) n'interrompent plus la mise à jour (#3)",
-        "it": "Errori di consumo (ad es. HTTP 403) non annullano più l'unità (#3)",
+        "it": "Gli errori di consumo (ad es. HTTP 403) non interrompono più l'aggiornamento dell'unità (#3)",
         "es": "Los errores de consumo (p. ej. HTTP 403) ya no anulan la actualización de la unidad (#3)",
-        "pl": "Błędy zużycia (np. HTTP 403) przestają przerwać aktualizacji urządzenia (#3)",
+        "pl": "Błędy zużycia (np. HTTP 403) nie przerywają już aktualizacji urządzenia (#3)",
         "uk": "Помилки споживання (наприклад, HTTP 403) більше не переривають оновлення пристрою (#3)",
-        "zh-cn": "消耗错误（例如 HTTP 403）不再中止单位更新 (#3)"
+        "zh-cn": "消耗错误（例如 HTTP 403）不再中止设备更新 (#3)"
       },
       "0.1.0": {
         "en": "initial release",
@@ -45,29 +45,29 @@
     },
     "titleLang": {
       "en": "Suru-Watermonitor",
-      "de": "Suru-Wassermonitor",
-      "ru": "Суру-Водный монитор",
-      "pt": "Suru-Monitor de Água",
+      "de": "Suru-Watermonitor",
+      "ru": "Suru-Watermonitor",
+      "pt": "Suru-Watermonitor",
       "nl": "Suru-Watermonitor",
       "fr": "Suru-Watermonitor",
       "it": "Suru-Watermonitor",
-      "es": "Suru-Monitor de agua",
-      "pl": "Suru-wodny monitor",
-      "uk": "Суру-Водомонітор",
-      "zh-cn": "Suru-水监测器"
+      "es": "Suru-Watermonitor",
+      "pl": "Suru-Watermonitor",
+      "uk": "Suru-Watermonitor",
+      "zh-cn": "Suru-Watermonitor"
     },
     "desc": {
       "en": "Reads water meter data and pipe alarms from the SURU WaterMonitor cloud",
       "de": "Liest Wasserzählerdaten und Rohralarme aus der SURU-WaterMonitor-Cloud",
-      "ru": "Суру Водяной монитор",
-      "pt": "Monitor de Água Suru",
-      "nl": "Suru Watermonitor",
-      "fr": "Moniteur d'eau Suru",
-      "it": "Suru Watermonitor",
-      "es": "Monitor de agua Suru",
-      "pl": "Monitor wodny Suru",
-      "uk": "Суру Watermonitor",
-      "zh-cn": "苏鲁水监测仪"
+      "ru": "Считывает данные счётчика воды и аварийные сигналы трубопровода из облака SURU WaterMonitor",
+      "pt": "Lê dados do medidor de água e alarmes de tubulação da nuvem SURU WaterMonitor",
+      "nl": "Leest watermeterdata en leidingalarmen uit de SURU WaterMonitor-cloud",
+      "fr": "Lit les données du compteur d'eau et les alarmes de canalisation depuis le cloud SURU WaterMonitor",
+      "it": "Legge i dati del contatore dell'acqua e gli allarmi delle tubature dal cloud SURU WaterMonitor",
+      "es": "Lee los datos del contador de agua y las alarmas de tuberías desde la nube SURU WaterMonitor",
+      "pl": "Odczytuje dane licznika wody i alarmy rurociągu z chmury SURU WaterMonitor",
+      "uk": "Зчитує дані лічильника води та сигнали тривоги трубопроводу з хмари SURU WaterMonitor",
+      "zh-cn": "从 SURU WaterMonitor 云端读取水表数据和管道警报"
     },
     "authors": [
       "M1kad0 <leonie+iobroker@sgessinger.de>"

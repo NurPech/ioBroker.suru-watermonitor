@@ -19,7 +19,7 @@
     "url": "https://github.com/NurPech/ioBroker.suru-watermonitor.git"
   },
   "engines": {
-    "node": ">= 22"
+    "node": ">=22.0.0"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.4.3"

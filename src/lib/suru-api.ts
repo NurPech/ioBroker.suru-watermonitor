@@ -5,7 +5,7 @@
  * `Authorization: Bearer <access_token>` to the API Gateway (like the Android app).
  */
 import { AWSSRP, type ChallengeParameters } from './aws-srp';
-import { API_BASE, COGNITO_CLIENT_ID, COGNITO_IDP_URL, COGNITO_POOL_ID } from './constants';
+import { API_BASE, COGNITO_CLIENT_ID, COGNITO_IDP_URL, COGNITO_POOL_ID, REQUEST_TIMEOUT_MS } from './constants';
 
 const AMZ_JSON = 'application/x-amz-json-1.1';
 
@@ -149,6 +149,7 @@ export class SuruWaterApi {
                     'X-Amz-Target': `AWSCognitoIdentityProviderService.${target}`,
                 },
                 body: JSON.stringify(body),
+                signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
             });
         } catch (err) {
             throw new SuruApiError(`Cognito request failed: ${(err as Error).message}`);
@@ -210,6 +211,7 @@ export class SuruWaterApi {
         try {
             resp = await this.fetchFn(url, {
                 headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+                signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
             });
         } catch (err) {
             throw new SuruApiError(`GET ${path} failed: ${(err as Error).message}`);
@@ -237,7 +239,7 @@ export class SuruWaterApi {
      * @param unitId Unit id
      */
     public getUnit(unitId: string): Promise<SuruUnitDetail> {
-        return this.get(`units/${unitId}`);
+        return this.get(`units/${encodeURIComponent(unitId)}`);
     }
 
     /**
@@ -248,7 +250,7 @@ export class SuruWaterApi {
     public getReading(unitId: string): Promise<SuruReading> {
         // `date` is mandatory (API returns HTTP 400 without it).
         const now = `${new Date().toISOString().slice(0, 19)}Z`;
-        return this.get(`units/${unitId}/reading`, { date: now });
+        return this.get(`units/${encodeURIComponent(unitId)}/reading`, { date: now });
     }
 
     /**
@@ -260,7 +262,7 @@ export class SuruWaterApi {
     public getConsumption(unitId: string, range = 'day'): Promise<SuruConsumption> {
         const start = new Date();
         start.setUTCHours(0, 0, 0, 0);
-        return this.get(`units/${unitId}/consumption`, {
+        return this.get(`units/${encodeURIComponent(unitId)}/consumption`, {
             range,
             startDate: `${start.toISOString().slice(0, 19)}Z`,
         });
@@ -273,6 +275,6 @@ export class SuruWaterApi {
      * @param deviceId Optional device id
      */
     public getIncidents(unitId: string, deviceId?: string): Promise<SuruIncidents> {
-        return this.get(`units/${unitId}/incidents`, deviceId ? { deviceId } : undefined);
+        return this.get(`units/${encodeURIComponent(unitId)}/incidents`, deviceId ? { deviceId } : undefined);
     }
 }

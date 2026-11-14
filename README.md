@@ -49,7 +49,7 @@ All product names and logos are property of their respective owners.
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.1.2 (2026-11-14)
 * (M1kad0) Added a timeout to all HTTP requests
 * (M1kad0) Use role `value` instead of `value.volume` for `meterReading`
 * (M1kad0) Translated the admin UI for all supported languages and removed an unused key

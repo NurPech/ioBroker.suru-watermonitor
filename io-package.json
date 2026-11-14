@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "suru-watermonitor",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "news": {
+      "0.1.2": {
+        "en": "Added a timeout to all HTTP requests\nUse role `value` instead of `value.volume` for `meterReading`\nTranslated the admin UI for all supported languages and removed an unused key\nAdded a link to the SURU WaterMonitor product page and aligned the author name",
+        "de": "Alle HTTP-Anfragen haben ein Timeout\nRolle `value` statt `value.volume` für `MeterReading`\nAdmin-UI für alle Sprachen übersetzt und unbenutzter Schlüssel entfernt\nLink zur SURU WaterMonitor-Produktseite hinzugefügt und Autor benannt",
+        "ru": "Добавлен тайм-аут для всех HTTP-запросов\nИспользуйте роль `value` вместо `value.volume` для `MeterReading`\nПеревел пользовательский интерфейс администратора на все поддерживаемые языки и удалил неиспользуемый ключ\nДобавлена ссылка на страницу продукта SURU WaterMonitor и выровнено имя автора",
+        "pt": "Limitou todos os pedidos HTTP\nUse a função `value` em vez de `value.volume` para `meterReading`\nTraduziu a IU admin em todos os idiomas aceitos e removeu uma chave não usada\nAdicionou um link à página do SURU WaterMonitor e alinhou o autor",
+        "nl": "Er is een time-out toegevoegd aan alle HTTP-aanvragen\nGebruik de rol `waarde` in plaats van `value.volume` voor `MeterReading`\nDe beheerinterface voor alle ondersteunde talen vertaald en een ongebruikte sleutel verwijderd\nEen link naar de productpagina van SURU WaterMonitor toegevoegd en de naam van de auteur op één lijn gebracht",
+        "fr": "Ajout d'un timeout aux requêtes HTTP\nUtilisez le rôle « value » au lieu de « value.volume » pour « MeterReading »\nA traduit l'interface d'administration dans toutes les langues et supprimé une clé\nAjout d'un lien vers la page produit SURU WaterMonitor et ajout du nom de l'auteur",
+        "it": "Timeout per tutte le richieste HTTP\nUsa il ruolo «value» invece di «value.volume» per «meterReading»\nHa tradotto l'admin UI per tutte le lingue supportate e rimosso una chiave\nAggiunto un link alla pagina del prodotto SURU WaterMonitor e l'autore",
+        "es": "Ha añadido tiempo de espera a las solicitudes HTTP\nUtilice el rol `value` en lugar de `value.volume` para `MeterReading`\nTradujo la interfaz de administrador a todos los idiomas y quitó una clave sin usar\nAñadió un enlace a la página del producto SURU WaterMonitor y alineó el nombre del autor",
+        "pl": "Dodano limit czasu do wszystkich żądań HTTP\nUżyj roli `value` zamiast `value.volume` dla `MeterReading`\nPrzetłumaczył interfejs administratora dla wszystkich obsługiwanych języków i usunął nieużywany klucz\nDodano link do strony produktu SURU WaterMonitor i wyrównano nazwę autora",
+        "uk": "Додано тайм-аут для всіх HTTP-запитів\nВикористовуйте роль `значення` замість `значення.об'єм` для ``MeterReading`\nПереклав інтерфейс адміністратора для всіх підтримуваних мов і видалив невикористаний ключ\nДодано посилання на сторінку продукту SURU WaterMonitor та вирівняно ім'я автора",
+        "zh-cn": "为所有 HTTP 请求添加了超时时间\n对于 meterReading，使用角色 value 而不是 value.volume\n翻译了所有支持的语言的管理界面并删除了未使用的密钥\n添加了指向 SURU WaterMonitor 产品页面的链接并调整了作者姓名"
+      },
       "0.1.1": {
         "en": "Consumption errors (e.g. HTTP 403) no longer abort the unit update (#3)",
         "de": "Konsumfehler (z. B. HTTP 403) brechen das Geräte-Update nicht mehr ab (#3)",

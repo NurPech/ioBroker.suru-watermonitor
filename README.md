@@ -12,7 +12,7 @@
 
 ## suru-watermonitor adapter for ioBroker
 
-Reads data of the SURU WaterMonitor water meter / pipe monitor from the SURU cloud.
+Reads data of the [SURU WaterMonitor](https://www.suru-water.com) water meter / pipe monitor from the SURU cloud.
 The cloud API is not public and was reverse engineered, see also the
 [Home Assistant integration](https://github.com/teuffel/homeassistant-suru-watermonitor) this adapter is ported from.
 
@@ -49,11 +49,17 @@ All product names and logos are property of their respective owners.
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (M1kad0) Added a timeout to all HTTP requests
+* (M1kad0) Use role `value` instead of `value.volume` for `meterReading`
+* (M1kad0) Translated the admin UI for all supported languages and removed an unused key
+* (M1kad0) Added a link to the SURU WaterMonitor product page and aligned the author name
+
 ### 0.1.1 (2026-10-28)
-* (NurPech) Consumption errors (e.g. HTTP 403) no longer abort the unit update (#3)
+* (M1kad0) Consumption errors (e.g. HTTP 403) no longer abort the unit update (#3)
 
 ### 0.1.0 (2026-10-07)
-* (NurPech) initial release
+* (M1kad0) initial release
 
 ## License
 MIT License

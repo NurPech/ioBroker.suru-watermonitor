@@ -7,6 +7,9 @@ export const COGNITO_IDP_URL = `https://cognito-idp.${COGNITO_REGION}.amazonaws.
 // SURU backend (AWS API Gateway, eu-central-1)
 export const API_BASE = 'https://api.freeze.suru-cloud.com/v2';
 
+// Timeout for every HTTP request in milliseconds
+export const REQUEST_TIMEOUT_MS = 30_000;
+
 // Polling interval in minutes
 export const DEFAULT_SCAN_INTERVAL_MINUTES = 60;
 export const MIN_SCAN_INTERVAL_MINUTES = 5;

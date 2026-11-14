@@ -12,7 +12,7 @@ const INCIDENT_KEYS = ['highFlow', 'continuousWaterFlow', 'temperature', 'lowFlo
 type StateDef = Pick<ioBroker.StateCommon, 'name' | 'type' | 'role' | 'unit'>;
 
 const STATES: Record<string, StateDef> = {
-    meterReading: { name: 'Meter reading', type: 'number', role: 'value.volume', unit: 'm³' },
+    meterReading: { name: 'Meter reading', type: 'number', role: 'value', unit: 'm³' },
     consumptionToday: { name: 'Consumption today', type: 'number', role: 'value', unit: 'l' },
     waterHardness: { name: 'Water hardness', type: 'number', role: 'value', unit: '°dH' },
     phValue: { name: 'pH value', type: 'number', role: 'value' },
@@ -123,7 +123,7 @@ class SuruWatermonitor extends utils.Adapter {
 
         const address = detail.address ?? {};
         const label = [address.streetName, address.streetNumber].filter(Boolean).join(' ');
-        const channel = unitId.replace(this.FORBIDDEN_CHARS, '_');
+        const channel = unitId.replace(/[^a-zA-Z0-9_-]/g, '_');
         await this.extendObject(channel, {
             type: 'device',
             common: { name: `SURU WaterMonitor ${label}`.trim() },

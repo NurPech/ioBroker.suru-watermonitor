@@ -1,7 +1,6 @@
 {
     "E-Mail": "E-Mail",
-    "Password": "Password",
-    "Poll interval (minutes)": "Poll interval (minutes)",
-    "SURU account e-mail": "SURU account e-mail",
-    "suru-watermonitor adapter settings": "Adapter settings for suru-watermonitor"
+    "Password": "Пароль",
+    "Poll interval (minutes)": "Интервал опроса (минуты)",
+    "SURU account e-mail": "E-mail учётной записи SURU"
 }
